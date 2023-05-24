@@ -2,7 +2,6 @@ import time
 import xaker, dnews, pda, opennet
 import requests
 import mariadb
-import sys
 def connector():
 # Connect to MariaDB Platform
     while True:

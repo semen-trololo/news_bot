@@ -1,20 +1,22 @@
 # Module Imports
 # pip install mariadb
 import mariadb
-import sys
+import time
 
 # Connect to MariaDB Platform
-try:
-    conn = mariadb.connect(
-        user="root",
-        password="12345",
-        host="127.0.0.1",
-        port=3306,
-        database="rss_feed"
-    )
-except mariadb.Error as e:
-    print(f"Error connecting to MariaDB Platform: {e}")
-    sys.exit(1)
+while True:
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="12345",
+            host="127.0.0.1",
+            port=3306,
+            database="rss_feed"
+        )
+        break
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        time.sleep(60)
 
 # Get Cursor
 cur = conn.cursor()
