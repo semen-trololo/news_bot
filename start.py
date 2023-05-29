@@ -33,9 +33,8 @@ def status_url(url):
         return 0
 
 
-def add_news(id_news, conn):
+def add_news(id_news, conn, cur):
     sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
-    cur = conn.cursor()
     cur.execute(sql)
     row = cur.fetchone()
     if row is None:
@@ -63,27 +62,32 @@ def get_setting(path, section, setting):
     config = get_config(path)
     value = config.get(section, setting)
     return value
-
-path_settings = 'settings.ini'
-PORT_SQL = get_setting(path_settings, 'sql', 'port')
-HOST_SQL = get_setting(path_settings, 'sql', 'host')
-USER_SQL = get_setting(path_settings, 'sql', 'user')
-PASS_SQL = get_setting(path_settings, 'sql', 'password')
-DB_SQL = get_setting(path_settings, 'sql', 'db')
-
-conn = connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
-_pda = parser.get_urls_pda()
-_3dnews = parser.get_urls_dnews()
-_opennet = parser.get_urls_opennet()
-_xaker = parser.get_urls_xakep()
-
-for data in _pda:
-    add_news(data, conn)
-for data in _3dnews:
-    add_news(data, conn)
-for data in _opennet:
-    add_news(data, conn)
-for data in _xaker:
-    add_news(data, conn)
-
-conn.close()
+def start():
+    path_settings = 'settings.ini'
+    PORT_SQL = int(get_setting(path_settings, 'sql', 'port'))
+    HOST_SQL = get_setting(path_settings, 'sql', 'host')
+    USER_SQL = get_setting(path_settings, 'sql', 'user')
+    PASS_SQL = get_setting(path_settings, 'sql', 'password')
+    DB_SQL = get_setting(path_settings, 'sql', 'db')
+    print('Get settings')
+    conn = connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
+    cur = conn.cursor()
+    _pda = parser.get_urls_pda()
+    _3dnews = parser.get_urls_dnews()
+    _opennet = parser.get_urls_opennet()
+    _xaker = parser.get_urls_xakep()
+    print('Get urls')
+    for data in _pda:
+        add_news(data, conn, cur)
+    print('pda')
+    for data in _3dnews:
+        add_news(data, conn, cur)
+    print('3dnews')
+    for data in _opennet:
+        add_news(data, conn, cur)
+    print('opennet')
+    for data in _xaker:
+        add_news(data, conn, cur)
+    print('xaker')
+    print('Exit start')
+    conn.close()
