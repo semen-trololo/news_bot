@@ -1,5 +1,5 @@
 import time
-import xaker, dnews, pda, opennet
+import parser
 import requests
 import mariadb
 def connector():
@@ -44,10 +44,10 @@ def add_news(id_news, conn):
 
 
 conn = connector()
-_pda = pda.parse()
-_3dnews = dnews.parse()
-_opennet = opennet.parse()
-_xaker = xaker.parse()
+_pda = parser.get_urls_pda()
+_3dnews = parser.get_urls_dnews()
+_opennet = parser.get_urls_opennet()
+_xaker = parser.get_urls_xakep()
 
 for data in _pda:
     add_news(data, conn)
