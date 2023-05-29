@@ -3,7 +3,28 @@ import requests
 import mariadb
 import sys
 import time
+import configparser
+import os
 
+def get_config(path):
+    """
+    Returns the config object
+    """
+    if not os.path.exists(path):
+        #create_config(path)
+        pass
+    config = configparser.ConfigParser()
+    config.read(path)
+    return config
+
+
+def get_setting(path, section, setting):
+    """
+    Print out a setting
+    """
+    config = get_config(path)
+    value = config.get(section, setting)
+    return value
 
 def add_news(id_news, conn):
     sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
@@ -20,7 +41,14 @@ def add_news(id_news, conn):
         conn.commit()
         print(id_news)
 
-conn = start.connector()
+path_settings = 'settings.ini'
+PORT_SQL = get_setting(path_settings, 'sql', 'port')
+HOST_SQL = get_setting(path_settings, 'sql', 'host')
+USER_SQL = get_setting(path_settings, 'sql', 'user')
+PASS_SQL = get_setting(path_settings, 'sql', 'password')
+DB_SQL = get_setting(path_settings, 'sql', 'db')
+
+conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
 
 while True:
     _pda = parser.get_urls_pda()
