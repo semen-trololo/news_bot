@@ -44,32 +44,9 @@ def add_news(id_news, conn, cur):
         cur.execute(sql)
         conn.commit()
 
-def get_config(path):
-    """
-    Returns the config object
-    """
-    if not os.path.exists(path):
-        #create_config(path)
-        pass
-    config = configparser.ConfigParser()
-    config.read(path)
-    return config
 
-def get_setting(path, section, setting):
-    """
-    Print out a setting
-    """
-    config = get_config(path)
-    value = config.get(section, setting)
-    return value
-def start():
-    path_settings = 'settings.ini'
-    PORT_SQL = int(get_setting(path_settings, 'sql', 'port'))
-    HOST_SQL = get_setting(path_settings, 'sql', 'host')
-    USER_SQL = get_setting(path_settings, 'sql', 'user')
-    PASS_SQL = get_setting(path_settings, 'sql', 'password')
-    DB_SQL = get_setting(path_settings, 'sql', 'db')
-    print('Get settings')
+def start(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL):
+
     conn = connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
     cur = conn.cursor()
     _pda = parser.get_urls_pda()

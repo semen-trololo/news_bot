@@ -12,6 +12,7 @@ import telebot
 def send_teleg_bot(message):
     try:
         bot.send_message(chat_id=id_chat, text=message)
+        time.sleep(1)
     except:
         print('[DEBUG] Error send message in telegram')
 
@@ -48,6 +49,7 @@ def add_news(id_news, conn, cur):
         cur.execute(sql)
         conn.commit()
         send_teleg_bot(id_news)
+        print(id_news)
 
 
 path_settings = 'settings.ini'
@@ -60,7 +62,7 @@ _KEY = get_setting(path_settings, 'telegram', 'key')
 id_chat = get_setting(path_settings, 'telegram', 'id_chat')
 bot = telebot.TeleBot(_KEY)
 send_teleg_bot('Start news bot...')
-start.start()
+start.start(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
 
 while True:
     conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
