@@ -1,5 +1,5 @@
 import time
-from news_parser import parser
+import parser
 import requests
 import mariadb
 
