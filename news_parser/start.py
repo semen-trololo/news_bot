@@ -1,9 +1,8 @@
 import time
-import parser
+from news_parser import parser
 import requests
 import mariadb
-import os
-import configparser
+
 
 def connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL):
 # Connect to MariaDB Platform

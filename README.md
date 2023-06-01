@@ -41,7 +41,7 @@ ADD start.py /opt/
 ADD bot.py /opt/
 ADD parser.py /opt/
 ADD settings.ini /opt/
-CMD [ "python3", "/opt/bot.py" ]
+CMD [ "python3", "/opt/bot.py" ]_
 
 #
 version: '2'

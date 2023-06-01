@@ -1,7 +1,4 @@
 import parser, start
-import requests
-import mariadb
-import sys
 import time
 import configparser
 import os

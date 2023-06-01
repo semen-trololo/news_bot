@@ -1,0 +1,11 @@
+version: '2'
+services:
+    db_news:
+        build: ./db_news
+        container_name: db_news
+        restart: always
+
+    parser_news:
+        build: ./news_parser
+        container_name: parser
+        restart: always
