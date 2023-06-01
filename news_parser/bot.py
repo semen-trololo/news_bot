@@ -49,7 +49,7 @@ def add_news(id_news, conn, cur):
         print(id_news)
 
 
-path_settings = 'settings.ini'
+path_settings = '/opt/settings.ini'
 PORT_SQL = int(get_setting(path_settings, 'sql', 'port'))
 HOST_SQL = get_setting(path_settings, 'sql', 'host')
 USER_SQL = get_setting(path_settings, 'sql', 'user')
