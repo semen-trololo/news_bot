@@ -3,11 +3,6 @@ services:
     db_news:
         build: ./db_news
         container_name: db_news
-        environment:
-            - ENV MYSQL_ROOT_PASSWORD=12345
-            - ENV MYSQL_DATABASE=db_news_parser
-            - ENV MYSQL_USER=admin
-            - ENV MYSQL_PASSWORD=admin
         restart: always
 
     parser_news:

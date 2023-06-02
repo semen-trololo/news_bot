@@ -1,2 +1,8 @@
 FROM mariadb:latest
+
 COPY table.sql /docker-entrypoint-initdb.d/
+
+ENV MYSQL_ROOT_PASSWORD 12345
+ENV MYSQL_DATABASE rss_feed
+ENV MYSQL_USER admin
+ENV MYSQL_PASSWORD admin
