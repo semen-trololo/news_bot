@@ -78,4 +78,4 @@ while True:
         add_news(data, conn, cur)
     print('[*] Step..')
     conn.close()
-    time.sleep(180)
+    time.sleep(300)

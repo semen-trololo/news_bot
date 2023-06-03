@@ -5,6 +5,9 @@ def get_urls_dnews():
     url_list = []
     try:
         r = requests.get('https://3dnews.ru/news')
+        if r.status_code != 200:
+            print('[DEBUG] ', r.status_code)
+            return False
     except:
         print('[DEBUG] Error get URL')
         return False
@@ -28,6 +31,9 @@ def get_urls_opennet():
     url_list = []
     try:
         r = requests.get('https://www.opennet.ru/')
+        if r.status_code != 200:
+            print('[DEBUG] ', r.status_code)
+            return False
     except:
         print('[DEBUG] Error get URL')
         return False
@@ -50,6 +56,9 @@ def get_urls_xakep():
     url_list = []
     try:
         r = requests.get('https://xakep.ru/')
+        if r.status_code != 200:
+            print('[DEBUG] ', r.status_code)
+            return False
     except:
         print('[DEBUG] Error get URL')
         return False
@@ -69,13 +78,14 @@ def get_urls_pda():
     url_list = []
     try:
         r = requests.get('https://4pda.to')
+        if r.status_code != 200:
+            print('[DEBUG] ', r.status_code)
+            return False
     except:
         print('[DEBUG] Error get URL 4pda')
         return False
     soup = BeautifulSoup(r.text, "html.parser")
     soup_blok = soup.find_all('article')
-
-
     for tmp in soup_blok:
         try:
             link = tmp.find('a')
