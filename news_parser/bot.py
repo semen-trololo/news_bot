@@ -12,7 +12,7 @@ def send_teleg_bot(message):
         bot.send_message(chat_id=id_chat, text=message)
         time.sleep(1)
     except:
-        print('[DEBUG] Error send message in telegram')
+        py_logger.warning('Error send message in telegram')
 
 def get_config(path):
     """
@@ -47,7 +47,7 @@ def add_news(id_news, conn, cur):
         cur.execute(sql)
         conn.commit()
         send_teleg_bot(id_news)
-        print(id_news)
+        time.sleep(1)
 
 py_logger = logging.getLogger('[BOT]')
 py_logger.setLevel(logging.INFO)
@@ -71,19 +71,19 @@ _KEY = get_setting(path_settings, 'telegram', 'key')
 id_chat = get_setting(path_settings, 'telegram', 'id_chat')
 
 bot = telebot.TeleBot(_KEY)
-send_teleg_bot('Start news bot...')
 
+send_teleg_bot('Start news bot...')
 py_logger.info('Start news bot...')
-py_logger.warning()
+
 start.start(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL, py_logger)
 
 while True:
     conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
     cur = conn.cursor()
-    _pda, _pda_error = parser.get_urls_pda()
-    _3dnews, _3dnews_error = parser.get_urls_dnews()
-    _opennet, _opennet_error = parser.get_urls_opennet()
-    _xaker, _xaker_error = parser.get_urls_xakep()
+    _pda, _pda_error = parser.get_urls_pda(py_logger)
+    _3dnews, _3dnews_error = parser.get_urls_dnews(py_logger)
+    _opennet, _opennet_error = parser.get_urls_opennet(py_logger)
+    _xaker, _xaker_error = parser.get_urls_xakep(py_logger)
     if _pda_error:
         for data in _pda:
             add_news(data, conn, cur)
