@@ -39,7 +39,7 @@ def add_news(id_news, conn, cur):
     cur.execute(sql)
     row = cur.fetchone()
     if row is None:
-        status = start.status_url(id_news)
+        status = 0
         flag_send = 0
         if status:
             flag_send = 1

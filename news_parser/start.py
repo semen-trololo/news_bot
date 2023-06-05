@@ -37,7 +37,7 @@ def add_news(id_news, conn, cur):
     cur.execute(sql)
     row = cur.fetchone()
     if row is None:
-        status = status_url(id_news)
+        status = 0
         flag_send = 0
         sql = "INSERT INTO rss_news (id_news, status, flag_send) VALUES ('{}', '{}', '{}');".format(id_news, status, flag_send)
         cur.execute(sql)
