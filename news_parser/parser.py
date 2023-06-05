@@ -1,16 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_urls_dnews():
+def get_urls_dnews(py_logger):
     url_list = []
     try:
         r = requests.get('https://3dnews.ru/news')
         if r.status_code != 200:
-            print('[DEBUG] ', r.status_code)
-            return False
+            py_logger.warning(f'Status code: {r.status_code}')
+            return url_list, False
     except:
-        print('[DEBUG] Error get URL')
-        return False
+        py_logger.warning('Error requests URL 3dnews')
+        return url_list, False
     soup = BeautifulSoup(r.text, "html.parser")
     soup_blok = soup.find_all('div', {'class': "cntPrevWrapper"})
     for tmp in soup_blok:
@@ -25,18 +25,18 @@ def get_urls_dnews():
         except:
             continue
 
-    return url_list
+    return url_list, True
 
-def get_urls_opennet():
+def get_urls_opennet(py_logger):
     url_list = []
     try:
         r = requests.get('https://www.opennet.ru/')
         if r.status_code != 200:
-            print('[DEBUG] ', r.status_code)
-            return False
+            py_logger.warning(f'Status code: {r.status_code}')
+            return url_list, False
     except:
-        print('[DEBUG] Error get URL')
-        return False
+        py_logger.warning('Error requests URL opennet')
+        return url_list, False
     soup = BeautifulSoup(r.text, "html.parser")
     soup_blok = soup.find_all('table', {'class': "tlist"})
     for table in soup_blok:
@@ -50,18 +50,18 @@ def get_urls_opennet():
                     continue
         except:
             continue
-    return url_list
+    return url_list, True
 
-def get_urls_xakep():
+def get_urls_xakep(py_logger):
     url_list = []
     try:
         r = requests.get('https://xakep.ru/')
         if r.status_code != 200:
-            print('[DEBUG] ', r.status_code)
-            return False
+            py_logger.warning(f'Status code: {r.status_code}')
+            return url_list, False
     except:
-        print('[DEBUG] Error get URL')
-        return False
+        py_logger.warning('Error requests URL xakep')
+        return url_list, False
     soup = BeautifulSoup(r.text, "html.parser")
     soup_blok = soup.find_all('div', {'class': "block-article-content-wrapper"})
     for tmp in soup_blok:
@@ -72,27 +72,25 @@ def get_urls_xakep():
             url_list.append(link_news)
         except:
             continue
-    return url_list
+    return url_list, True
 
-def get_urls_pda():
+def get_urls_pda(py_logger):
     url_list = []
     try:
         r = requests.get('https://4pda.to')
         if r.status_code != 200:
-            print('[DEBUG] ', r.status_code)
-            return False
+            py_logger.warning(f'Status code: {r.status_code}')
+            return url_list, False
     except:
-        print('[DEBUG] Error get URL 4pda')
-        return False
+        py_logger.warning('Error requests URL 4pda')
+        return url_list, False
     soup = BeautifulSoup(r.text, "html.parser")
     soup_blok = soup.find_all('article')
     for tmp in soup_blok:
         try:
             link = tmp.find('a')
             link_news = link.get('href')
-            text_news = link.get('title')
-            text_news = text_news.strip()
             url_list.append(link_news)
         except:
             continue
-    return url_list
+    return url_list, True
