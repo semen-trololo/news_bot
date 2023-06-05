@@ -53,13 +53,14 @@ py_logger = logging.getLogger('[BOT]')
 py_logger.setLevel(logging.INFO)
 
 # настройка обработчика и форматировщика в соответствии с нашими нуждами
-py_handler = logging.FileHandler('news_bot.log', mode='a')
+py_handler = logging.StreamHandler()
 py_formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 
 # добавление форматировщика к обработчику
 py_handler.setFormatter(py_formatter)
 # добавление обработчика к логгеру
 py_logger.addHandler(py_handler)
+
 
 path_settings = '/opt/settings.ini'
 PORT_SQL = int(get_setting(path_settings, 'sql', 'port'))
@@ -78,7 +79,7 @@ py_logger.info('Start news bot...')
 start.start(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL, py_logger)
 
 while True:
-    conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL)
+    conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL,py_logger)
     cur = conn.cursor()
     _pda, _pda_error = parser.get_urls_pda(py_logger)
     _3dnews, _3dnews_error = parser.get_urls_dnews(py_logger)

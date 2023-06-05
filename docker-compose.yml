@@ -8,4 +8,6 @@ services:
     parser_news:
         build: ./news_parser
         container_name: parser
+        depends_on:
+            -   db_news
         restart: always
