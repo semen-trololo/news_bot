@@ -87,16 +87,16 @@ while True:
     _xaker, _xaker_error = parser.get_urls_xakep(py_logger)
     if _pda_error:
         for data in _pda:
-            add_news(data, conn, cur)
+            add_news(data[0], data[1], conn, cur)
     if _3dnews_error:
         for data in _3dnews:
-            add_news(data, conn, cur)
+            add_news(data[0], data[1], conn, cur)
     if _opennet_error:
         for data in _opennet:
-            add_news(data, conn, cur)
+            add_news(data[0], data[1], conn, cur)
     if _xaker_error:
         for data in _xaker:
-            add_news(data, conn, cur)
-    print('[*] Step..')
+            add_news(data[0], data[1], conn, cur)
+    #print('[*] Step..')
     conn.close()
     time.sleep(300)

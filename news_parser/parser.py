@@ -21,7 +21,10 @@ def get_urls_dnews(py_logger):
                 pass
             else:
                 link_news = 'https://3dnews.ru' + link_news
-                url_list.append(link_news)
+                text_news = tmp.find('h1').string
+                text_news = text_news.replace('\xa0', ' ')
+                text_news = text_news.strip()
+                url_list.append((text_news, link_news))
         except:
             continue
 
@@ -45,7 +48,11 @@ def get_urls_opennet(py_logger):
             for link_tmp in tmp:
                 try:
                     link_news = link_tmp.get('href')
-                    url_list.append('https://www.opennet.ru' + str(link_news))
+                    if link_news.split('/')[1] == 'opennews':
+                        text_news = link_tmp.get_text()
+                        url_list.append((text_news, 'https://www.opennet.ru' + str(link_news)))
+                    else:
+                        continue
                 except:
                     continue
         except:
@@ -69,7 +76,9 @@ def get_urls_xakep(py_logger):
             link = tmp.find('h3', {'class': "entry-title"})
             link_a = link.find('a')
             link_news = link_a.get('href')
-            url_list.append(link_news)
+            text_news = link.find('span').string
+            text_news = text_news.strip()
+            url_list.append((text_news, link_news))
         except:
             continue
     return url_list, True
@@ -90,7 +99,9 @@ def get_urls_pda(py_logger):
         try:
             link = tmp.find('a')
             link_news = link.get('href')
-            url_list.append(link_news)
+            text_news = link.get('title')
+            text_news = text_news.strip()
+            url_list.append((text_news, link_news))
         except:
             continue
     return url_list, True

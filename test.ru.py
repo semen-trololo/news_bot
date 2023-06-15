@@ -27,6 +27,7 @@ def parse_3dnews():
     return True
 
 def parse_4pda():
+    t = []
     try:
         r = requests.get('https://4pda.to')
     except:
@@ -41,9 +42,11 @@ def parse_4pda():
             link_news = link.get('href')
             text_news = link.get('title')
             text_news = text_news.strip()
+            t.append((text_news, link_news))
+
         except:
             continue
-    return True
+    return t
 
 def parse_xaker():
 
@@ -81,10 +84,17 @@ def parse_opennet():
                     link_news = link_tmp.get('href')
                     if link_news.split('/')[1] == 'opennews':
                         text_news = link_tmp.get_text()
+                        print(link_news)
+                        print(text_news)
                     else:
+
                         continue
                 except:
                     continue
         except:
             continue
     return True
+
+t = parse_4pda()
+for y in t:
+    print(y[0])
