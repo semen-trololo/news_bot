@@ -47,7 +47,7 @@ def add_news(id_news, link, conn, cur):
             id_news, link, status, flag_send)
         cur.execute(sql)
         conn.commit()
-        send_teleg_bot(id_news)
+        send_teleg_bot(link)
         time.sleep(1)
 
 py_logger = logging.getLogger('[BOT]')
