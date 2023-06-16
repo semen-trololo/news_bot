@@ -34,7 +34,7 @@ def get_setting(path, section, setting):
     value = config.get(section, setting)
     return value
 
-def add_news(id_news, conn, cur):
+def add_news(id_news, link, conn, cur):
     sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
     cur.execute(sql)
     row = cur.fetchone()
@@ -43,7 +43,8 @@ def add_news(id_news, conn, cur):
         flag_send = 0
         if status:
             flag_send = 1
-        sql = "INSERT INTO rss_news (id_news, status, flag_send) VALUES ('{}', '{}', '{}');".format(id_news, status, flag_send)
+        sql = "INSERT INTO rss_news (id_news, link, status, flag_send) VALUES ('{}', '{}', '{}', '{}');".format(
+            id_news, link, status, flag_send)
         cur.execute(sql)
         conn.commit()
         send_teleg_bot(id_news)
