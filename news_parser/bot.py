@@ -4,6 +4,7 @@ import configparser
 import os
 import telebot
 import logging
+import hashlib
 # pip install pytelegrambotapi
 
 
@@ -35,6 +36,10 @@ def get_setting(path, section, setting):
     return value
 
 def add_news(id_news, link, conn, cur):
+    if len(id_news) < 1:
+        return
+    id_news = hashlib.md5(id_news.encode()).hexdigest()
+    id_news = id_news.replace(':', '')
     sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
     cur.execute(sql)
     row = cur.fetchone()

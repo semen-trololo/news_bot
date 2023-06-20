@@ -2,7 +2,7 @@ import time
 import parser
 import requests
 import mariadb
-
+import hashlib
 
 def connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL, py_logger):
 # Connect to MariaDB Platform
@@ -33,6 +33,10 @@ def status_url(url):
 
 
 def add_news(id_news, link, conn, cur):
+    if len(id_news) < 1:
+        return
+    id_news = hashlib.md5(id_news.encode()).hexdigest()
+    id_news = id_news.replace(':', '')
     sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
     cur.execute(sql)
     row = cur.fetchone()
