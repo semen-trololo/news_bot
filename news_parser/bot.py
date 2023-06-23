@@ -4,6 +4,7 @@ import configparser
 import os
 import telebot
 import logging
+import hashlib
 # pip install pytelegrambotapi
 
 
@@ -35,20 +36,27 @@ def get_setting(path, section, setting):
     return value
 
 def add_news(id_news, link, conn, cur):
-    sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
-    cur.execute(sql)
-    row = cur.fetchone()
-    if row is None:
-        status = 0
-        flag_send = 0
-        if status:
-            flag_send = 1
-        sql = "INSERT INTO rss_news (id_news, link, status, flag_send) VALUES ('{}', '{}', '{}', '{}');".format(
-            id_news, link, status, flag_send)
+    try:
+        if len(id_news) < 1:
+            return
+        id_news = hashlib.md5(id_news.encode()).hexdigest()
+        id_news = id_news.replace(':', '')
+        sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
         cur.execute(sql)
-        conn.commit()
-        send_teleg_bot(link)
-        time.sleep(1)
+        row = cur.fetchone()
+        if row is None:
+            status = 0
+            flag_send = 0
+            if status:
+                flag_send = 1
+            sql = "INSERT INTO rss_news (id_news, link, status, flag_send) VALUES ('{}', '{}', '{}', '{}');".format(
+                id_news, link, status, flag_send)
+            cur.execute(sql)
+            conn.commit()
+            send_teleg_bot(link)
+            time.sleep(1)
+    except Exception as e:
+        py_logger.warning(e)
 
 py_logger = logging.getLogger('[BOT]')
 py_logger.setLevel(logging.INFO)
