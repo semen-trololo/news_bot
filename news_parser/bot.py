@@ -82,10 +82,16 @@ start.start(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL, py_logger)
 while True:
     conn = start.connector(USER_SQL, PASS_SQL, HOST_SQL, PORT_SQL, DB_SQL,py_logger)
     cur = conn.cursor()
-    _pda, _pda_error = parser.get_urls_pda(py_logger)
-    _3dnews, _3dnews_error = parser.get_urls_dnews(py_logger)
-    _opennet, _opennet_error = parser.get_urls_opennet(py_logger)
-    _xaker, _xaker_error = parser.get_urls_xakep(py_logger)
+    try:
+        _pda, _pda_error = parser.get_urls_pda(py_logger)
+        _3dnews, _3dnews_error = parser.get_urls_dnews(py_logger)
+        _opennet, _opennet_error = parser.get_urls_opennet(py_logger)
+        _xaker, _xaker_error = parser.get_urls_xakep(py_logger)
+    except Exception as e:
+        conn.close()
+        py_logger.warning(f"Error parser modules in start: {e}")
+        time.sleep(60)
+        continue
     if _pda_error:
         for data in _pda:
             add_news(data[0], data[1], conn, cur)
@@ -98,6 +104,5 @@ while True:
     if _xaker_error:
         for data in _xaker:
             add_news(data[0], data[1], conn, cur)
-    #print('[*] Step..')
     conn.close()
     time.sleep(300)
