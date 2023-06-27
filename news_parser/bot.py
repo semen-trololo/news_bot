@@ -44,11 +44,12 @@ def add_news(id_news, link, conn, cur):
         sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
         cur.execute(sql)
         row = cur.fetchone()
-        if row is None:
+        sql = "SELECT * FROM rss_news WHERE link = '{}';".format(link)
+        cur.execute(sql)
+        row_link = cur.fetchone()
+        if row is None and row_link is None:
             status = 0
             flag_send = 0
-            if status:
-                flag_send = 1
             sql = "INSERT INTO rss_news (id_news, link, status, flag_send) VALUES ('{}', '{}', '{}', '{}');".format(
                 id_news, link, status, flag_send)
             cur.execute(sql)
