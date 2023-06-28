@@ -9,11 +9,14 @@ import hashlib
 
 
 def send_teleg_bot(message):
-    try:
-        bot.send_message(chat_id=id_chat, text=message)
-        time.sleep(1)
-    except:
-        py_logger.warning('Error send message in telegram')
+    while True:
+        try:
+            bot.send_message(chat_id=id_chat, text=message)
+            time.sleep(1)
+            return
+        except:
+            py_logger.warning('Error send message in telegram')
+        time.sleep(30)
 
 def get_config(path):
     """
@@ -35,10 +38,11 @@ def get_setting(path, section, setting):
     value = config.get(section, setting)
     return value
 
-def add_news(id_news, link, conn, cur):
+def add_news(id_news, link, conn, cur, py_logger):
     try:
         if len(id_news) < 1:
             return
+        tmp = id_news
         id_news = hashlib.md5(id_news.encode()).hexdigest()
         id_news = id_news.replace(':', '')
         sql = "SELECT * FROM rss_news WHERE id_news = '{}';".format(id_news)
@@ -55,6 +59,9 @@ def add_news(id_news, link, conn, cur):
             cur.execute(sql)
             conn.commit()
             send_teleg_bot(link)
+            py_logger.info(id_news)
+            py_logger.info(tmp)
+            py_logger.info(link)
             time.sleep(1)
     except Exception as e:
         py_logger.warning(e)
@@ -103,15 +110,15 @@ while True:
         continue
     if _pda_error:
         for data in _pda:
-            add_news(data[0], data[1], conn, cur)
+            add_news(data[0], data[1], conn, cur, py_logger)
     if _3dnews_error:
         for data in _3dnews:
-            add_news(data[0], data[1], conn, cur)
+            add_news(data[0], data[1], conn, cur, py_logger)
     if _opennet_error:
         for data in _opennet:
-            add_news(data[0], data[1], conn, cur)
+            add_news(data[0], data[1], conn, cur, py_logger)
     if _xaker_error:
         for data in _xaker:
-            add_news(data[0], data[1], conn, cur)
+            add_news(data[0], data[1], conn, cur, py_logger)
     conn.close()
     time.sleep(300)
